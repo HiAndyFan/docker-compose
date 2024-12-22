@@ -1,0 +1,8 @@
+server {
+    listen 80;
+    listen [::]:80;
+    server_name _;
+
+    # 将所有 HTTP 请求重定向到 HTTPS
+    return 302 https://$host$request_uri;
+}
