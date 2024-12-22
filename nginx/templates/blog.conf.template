@@ -1,0 +1,15 @@
+server {
+	server_name blog.${NGINX_HOST};
+	listen 443 ssl;
+	listen  [::]:443 ssl;
+    ssl_certificate    /etc/nginx/ssl/newthread.run.cer;
+    ssl_certificate_key    /etc/nginx/ssl/newthread.run.key;
+
+	location / {
+		root /var/www/blog/;
+		index index.html index.htm;
+		add_header Cache-Control public;
+	}
+	access_log /var/log/nginx/blog.access.log;
+	error_log /var/log/nginx/blog.error.log warn;
+}
