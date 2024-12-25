@@ -1,4 +1,4 @@
-nginx/log/**/*
-nginx/ssl/**/*
-nginx/blog/**/*
-nginx/docker/**/*
+nginx/log/
+nginx/ssl/
+nginx/blog/
+nginx/docker/
