@@ -2,8 +2,8 @@ server {
 	server_name speedtest.${NGINX_HOST};
 	listen 443 ssl;
 	listen  [::]:443 ssl;
-    ssl_certificate    /etc/nginx/ssl/newthread.run/fullchain.pem;
-    ssl_certificate_key    /etc/nginx/ssl/newthread.run/privkey.pem;
+    ssl_certificate    /etc/nginx/ssl/live/newthread.run/fullchain.pem;
+    ssl_certificate_key    /etc/nginx/ssl/live/newthread.run/privkey.pem;
 
 	access_log /var/log/nginx/speedtest.access.log;
 	error_log /var/log/nginx/speedtest.error.log;
