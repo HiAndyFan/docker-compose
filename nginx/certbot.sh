@@ -7,5 +7,6 @@ sudo docker run -it --rm --name certbot \
         --agree-tos --key-type rsa \
         --dns-cloudflare \
         --dns-cloudflare-credentials /root/.secrets/cloudflare.ini \
-        -d newthread.run,*.newthread.run \
+        --dns-cloudflare-propagation-seconds 30 \
+        -d newthread.run,*.newthread.run,*.kr.newthread.run,*.ca.newthread.run \
         -n -m "andyfan.vip@gmail.com"
