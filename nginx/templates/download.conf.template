@@ -2,8 +2,8 @@ server {
 	server_name download.${NGINX_HOST};
 	listen 443 ssl;
 	listen  [::]:443 ssl;
-    ssl_certificate    /etc/nginx/ssl/newthread.run.cer;
-    ssl_certificate_key    /etc/nginx/ssl/newthread.run.key;
+    ssl_certificate    /etc/nginx/ssl/newthread.run/fullchain.pem;
+    ssl_certificate_key    /etc/nginx/ssl/newthread.run/privkey.pem;
 
 	access_log /var/log/nginx/download.access.log;
 	error_log /var/log/nginx/download.error.log;
