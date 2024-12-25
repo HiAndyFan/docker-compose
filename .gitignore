@@ -2,3 +2,4 @@ nginx/log/
 nginx/ssl/
 nginx/blog/
 nginx/docker/
+cloudflare.ini
