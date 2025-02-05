@@ -1,11 +1,9 @@
 server {
-    listen       80;
-    listen  [::]:80;
     server_name  localhost;
+	include ${SSL_CONFIG};
 
     #access_log  /var/log/nginx/host.access.log  main;
 
-    return 302 https://$host$request_uri;
     location / {
         root   /usr/share/nginx/html;
         index  index.html index.htm;

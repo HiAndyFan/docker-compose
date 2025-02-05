@@ -1,0 +1,4 @@
+listen ${NGINX_PORT};
+listen  [::]:${NGINX_PORT};
+${SSL_CERT}
+${SSL_KEY}

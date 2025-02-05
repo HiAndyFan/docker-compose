@@ -14,8 +14,9 @@ services:
      - "80:80"
      - "443:443"
     environment:
+     - SSL_CONFIG=/etc/nginx/conf.d/ssl
      - NGINX_HOST=newthread.run
      - NGINX_PORT=443 ssl
-     - SSL_CERT=/etc/nginx/ssl/cloudflare/newthread.run.pem
-     - SSL_KEY=/etc/nginx/ssl/cloudflare/private.key
-    restart: unless-stopped
+     - SSL_CERT=ssl_certificate /etc/nginx/ssl/cloudflare/newthread.run.pem
+     - SSL_KEY=ssl_certificate_key /etc/nginx/ssl/cloudflare/private.key
+    restart: on-failure:5
