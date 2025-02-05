@@ -1,9 +1,9 @@
 server {
 	server_name spelling.${NGINX_HOST};
-	listen 7443 ssl;
-	listen  [::]:7443 ssl;
-    ssl_certificate    /etc/nginx/ssl/newthread.run.cer;
-    ssl_certificate_key    /etc/nginx/ssl/newthread.run.key;
+	listen 443 ssl;
+	listen  [::]:443 ssl;
+    ssl_certificate    ${SSL_CERT};
+    ssl_certificate_key    ${SSL_KEY};
 
 	location / {
 		root /var/www/word-spelling/;

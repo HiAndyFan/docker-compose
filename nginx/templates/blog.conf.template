@@ -2,8 +2,8 @@ server {
 	server_name blog.${NGINX_HOST};
 	listen 443 ssl;
 	listen  [::]:443 ssl;
-    ssl_certificate    /etc/nginx/ssl/live/newthread.run/fullchain.pem;
-    ssl_certificate_key    /etc/nginx/ssl/live/newthread.run/privkey.pem;
+    ssl_certificate    ${SSL_CERT};
+    ssl_certificate_key    ${SSL_KEY};
 
 	location / {
 		root /var/www/blog/;

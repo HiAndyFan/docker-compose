@@ -16,4 +16,6 @@ services:
     environment:
      - NGINX_HOST=newthread.run
      - NGINX_PORT=443 ssl
+     - SSL_CERT=/etc/nginx/ssl/cloudflare/newthread.run.pem
+     - SSL_KEY=/etc/nginx/ssl/cloudflare/private.key
     restart: unless-stopped
