@@ -1,0 +1,15 @@
+server {
+	server_name spelling.${NGINX_HOST};
+	listen 7443 ssl;
+	listen  [::]:7443 ssl;
+    ssl_certificate    /etc/nginx/ssl/newthread.run.cer;
+    ssl_certificate_key    /etc/nginx/ssl/newthread.run.key;
+
+	location / {
+		root /var/www/word-spelling/;
+		index index.html index.htm;
+		add_header Cache-Control public;
+	}
+	access_log /var/log/nginx/spelling.access.log;
+	error_log /var/log/nginx/spelling.error.log warn;
+}

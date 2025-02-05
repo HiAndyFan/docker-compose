@@ -1,0 +1,20 @@
+services:
+  samba:
+    image: dperson/samba
+    container_name: samba
+    ports:
+      - "137:137/udp"
+      - "138:138/udp"
+      - "139:139"
+      - "445:445"
+      - "3702:3702/udp"
+    volumes:
+      - /mnt/usb1:/usb1
+    command:
+      - "-n"
+      - "-s"
+      - "ehd2;/usb1/;yes;no;no;cc,cc,cc"
+      - "-u"
+      - "cc;0shimima"
+    restart: no
+
