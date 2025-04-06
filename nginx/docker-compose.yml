@@ -15,8 +15,8 @@ services:
      - "443:443"
     environment:
      - SSL_CONFIG=/etc/nginx/conf.d/ssl
-     - NGINX_HOST=newthread.run
+     - NGINX_HOST=hevc.cc
      - NGINX_PORT=443 ssl
-     - SSL_CERT=ssl_certificate /etc/nginx/ssl/cloudflare/newthread.run.pem
-     - SSL_KEY=ssl_certificate_key /etc/nginx/ssl/cloudflare/private.key
+     - SSL_CERT=ssl_certificate /etc/nginx/ssl/cloudflare/hevc.cc.pem
+     - SSL_KEY=ssl_certificate_key /etc/nginx/ssl/cloudflare/hevc.cc.key
     restart: on-failure:5
