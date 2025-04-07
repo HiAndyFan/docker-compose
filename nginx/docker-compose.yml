@@ -14,9 +14,12 @@ services:
      - "80:80"
      - "443:443"
     environment:
-     - SSL_CONFIG=/etc/nginx/conf.d/ssl
+     - SSL_CONFIG=/etc/nginx/conf.d/ssl-cloudflare
+     - SSL_CONFIG_HEVC=/etc/nginx/conf.d/ssl-hevc
      - NGINX_HOST=hevc.cc
      - NGINX_PORT=443 ssl
      - SSL_CERT=ssl_certificate /etc/nginx/ssl/cloudflare/hevc.cc.pem
      - SSL_KEY=ssl_certificate_key /etc/nginx/ssl/cloudflare/hevc.cc.key
+     - HEVC_CERT=ssl_certificate /etc/nginx/ssl/hevc.cc.crt
+     - HEVC_KEY=ssl_certificate_key /etc/nginx/ssl/hevc.cc.key
     restart: on-failure:5

@@ -1,12 +1,24 @@
 server {
 	server_name lan.${NGINX_HOST};
-	include ${SSL_CONFIG};
-
-	location /ddns {
-		proxy_pass http://localhost:9876;
+	include ${SSL_CONFIG_HEVC};
+	
+	location /ddns/ {
+		rewrite ^/ddns/(.*) /$1 break;  # 移除 `/ddns/` 再代理
+		proxy_pass http://10.147.19.205:9876/;
+		proxy_redirect / /ddns/;  # 处理相对路径的重定向
+		proxy_set_header Host $host;
 	}
-	location /certimate {
-		proxy_pass http://localhost:8090;
+	location /certimate/ {
+		rewrite ^/certimate/(.*) /$1 break;
+		proxy_pass http://10.147.19.205:8090/;
+		proxy_redirect / /certimate/;  # 处理相对路径的重定向
+		proxy_redirect http://10.147.19.205:8090/ http://lan.${NGINX_HOST}/certimate/;
+		proxy_set_header Host $host; 
+	}
+	location ~ ^/(assets|logo.svg|api|imgs) {
+		proxy_pass http://10.147.19.205:8090;
+		proxy_redirect     off;
+		proxy_set_header   Host $host;
 	}
 	access_log /var/log/nginx/lan.access.log;
 	error_log /var/log/nginx/lan.error.log warn;
