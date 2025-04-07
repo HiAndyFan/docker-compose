@@ -1,0 +1,13 @@
+server {
+	server_name lan.${NGINX_HOST};
+	include ${SSL_CONFIG};
+
+	location /ddns {
+		proxy_pass http://localhost:9876;
+	}
+	location /certimate {
+		proxy_pass http://localhost:8090;
+	}
+	access_log /var/log/nginx/lan.access.log;
+	error_log /var/log/nginx/lan.error.log warn;
+}
