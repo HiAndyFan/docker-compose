@@ -1,0 +1,10 @@
+version: '3'
+services:
+  looking-glass:
+    image: wikihostinc/looking-glass-server
+    container_name: looking-glass
+    network_mode: host
+    environment:
+      - HTTP_PORT=3000
+      - PUBLIC_IPV4=docker.hevc.cc
+    restart: on-failure
