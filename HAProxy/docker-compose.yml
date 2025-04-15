@@ -1,0 +1,13 @@
+---
+services:
+  nuster:
+    image: nuster/nuster:latest
+    container_name: nuster
+    environment:
+      - TZ=Etc/UTC
+    volumes:
+      - ./nuster.cfg:/etc/nuster/nuster.cfg:ro
+      - ~/data/youdaoCache:/youdaoCache
+    ports:
+      - 8080:8080
+    restart: on-failure:3

@@ -1,5 +1,5 @@
 server {
-	server_name blog.${NGINX_HOST};
+	server_name blog.${NGINX_HOST} b.0-v-0.cc;
 	include ${SSL_CONFIG};
 
 	location / {
