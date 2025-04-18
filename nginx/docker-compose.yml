@@ -14,7 +14,7 @@ services:
      - "80:80"
      - "443:443"
     environment:
-     - SSL_CONFIG=/etc/nginx/conf.d/ssl-cloudflare
+     - SSL_CONFIG=/etc/nginx/conf.d/ssl-config
      - NGINX_HOST=hevc.cc
      - NGINX_PORT=443 ssl
      - SSL_CERT=ssl_certificate /etc/nginx/ssl/cloudflare/hevc.cc.pem
