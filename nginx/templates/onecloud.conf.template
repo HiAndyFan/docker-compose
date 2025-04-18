@@ -1,6 +1,6 @@
 server {
 	server_name one.l.${NGINX_HOST};
-	include ${SSL_CONFIG_HEVC};
+	include ${SSL_CONFIG};
 
 	location /ddns/ {
 		proxy_pass http://10.0.0.7:9876/;

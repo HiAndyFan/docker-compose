@@ -1,6 +1,6 @@
 server {
 	server_name spelling.${NGINX_HOST};
-	include ${SSL_CONFIG_HEVC};
+	include ${SSL_CONFIG};
 
 
 	location / {

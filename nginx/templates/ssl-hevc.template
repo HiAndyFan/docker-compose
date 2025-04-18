@@ -1,4 +1,0 @@
-listen ${NGINX_PORT};
-listen  [::]:${NGINX_PORT};
-${HEVC_CERT};
-${HEVC_KEY};
