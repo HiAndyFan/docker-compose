@@ -7,6 +7,5 @@ server {
 		index index.html index.htm;
 		add_header Cache-Control public;
 	}
-	access_log /var/log/nginx/blog.access.log;
-	error_log /var/log/nginx/blog.error.log warn;
+    access_log  /var/log/nginx/access.log  proxy;
 }

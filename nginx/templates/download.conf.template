@@ -2,8 +2,7 @@ server {
 	server_name download.${NGINX_HOST};
 	include ${SSL_CONFIG};
 
-	access_log /var/log/nginx/download.access.log;
-	error_log /var/log/nginx/download.error.log;
+    access_log  /var/log/nginx/access.log  proxy;
 	
 	root /var/www/download/;
 	location / {

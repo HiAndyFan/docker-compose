@@ -67,6 +67,5 @@ server {
 	
 	
 	
-	access_log /var/log/nginx/lan.access.log;
-	error_log /var/log/nginx/lan.error.log warn;
+    access_log  /var/log/nginx/access.log  proxy;
 }

@@ -2,8 +2,7 @@ server {
 	server_name speedtest.${NGINX_HOST};
 	include ${SSL_CONFIG};
 
-	access_log /var/log/nginx/speedtest.access.log;
-	error_log /var/log/nginx/speedtest.error.log;
+    access_log  /var/log/nginx/access.log  proxy;
 	
 	
 	location / {
