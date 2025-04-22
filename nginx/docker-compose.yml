@@ -12,6 +12,7 @@ services:
      - ./word-spelling/:/var/www/word-spelling/
      - ./download/:/var/www/download/
      - ./nginx.conf/:/etc/nginx/nginx.conf/
+     - ./nginx_cache/:/cache/
     ports:
      - "80:80"
      - "443:443"

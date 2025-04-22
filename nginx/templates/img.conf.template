@@ -1,16 +1,11 @@
 server {
-	server_name blog.${NGINX_HOST} b.0-v-0.cc;
+	server_name img.${NGINX_HOST};
 	include ${SSL_CONFIG};
 
-	# location / {
-	# 	root /var/www/blog/;
-	# 	index index.html index.htm;
-	# 	add_header Cache-Control public;
-	# }
-
 	location / {
-		proxy_cache qiniu_cache;
-		proxy_pass http://qiniu-blog.jpeg.asia/;
+		proxy_cache img_cache;
+		proxy_pass http://qiniu-img.jpeg.asia/;
+		proxy_set_header referer "jweiskrdpxwfoa.iq";
 
 		# 缓存键设置
 		proxy_cache_key "$scheme$request_method$host$request_uri";
@@ -19,8 +14,8 @@ server {
 		proxy_ignore_headers Cache-Control;
 
 		# 缓存有效时间
-		proxy_cache_valid 200 10m;
-		proxy_cache_valid 403 404 302 3s;
+		proxy_cache_valid 200 30d;
+		proxy_cache_valid 403 404 302 301 3s;
 		# 其他状态码默认缓存时间
 		proxy_cache_valid any 5m;
 		proxy_cache_revalidate on;
@@ -37,7 +32,14 @@ server {
 		proxy_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
 		proxy_cache_background_update on;
 		add_header X-Cache-Status "NGINX $upstream_cache_status";
-
 	}
-    # access_log  /var/logs/nginx/access.log  proxy;
+	# location /cache-status {
+	# 	proxy_cache_status on;
+	# 	access_log off;
+	# 	allow 10.0.0.0/24;
+	# 	deny all;
+	# }
+
+	# access_log /var/log/nginx/img.access.log;
+	# error_log /var/log/nginx/img.error.log warn;
 }
