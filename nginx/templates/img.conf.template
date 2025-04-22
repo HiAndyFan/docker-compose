@@ -3,7 +3,7 @@ server {
     include ${SSL_CONFIG};
 
     location / {
-        proxy_cache img_cache;
+        proxy_cache qiniu_cache;
         proxy_pass http://qiniu-img.jpeg.asia/;
         proxy_set_header referer "jweiskrdpxwfoa.iq";
 
