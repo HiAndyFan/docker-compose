@@ -1,8 +1,6 @@
 server {
 	server_name download.${NGINX_HOST};
 	include ${SSL_CONFIG};
-
-    access_log  /var/log/nginx/access.log  proxy;
 	
 	root /var/www/download/;
 	location / {
@@ -16,4 +14,6 @@ server {
 		charset utf-8; # 避免中文乱码
 		add_header Cache-Control private;
 	}
+
+    # access_log  /var/log/nginx/access.log  proxy;
 }

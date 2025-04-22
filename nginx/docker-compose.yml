@@ -3,6 +3,8 @@ services:
     image: nginx
     container_name: nginx
     volumes:
+     - /etc/timezone:/etc/timezone:ro
+     - /etc/localtime:/etc/localtime:ro
      - ./templates/:/etc/nginx/templates/
      - ./ssl/:/etc/nginx/ssl/
      - ./log/:/var/log/nginx/
@@ -17,6 +19,6 @@ services:
      - SSL_CONFIG=/etc/nginx/conf.d/ssl-config
      - NGINX_HOST=hevc.cc
      - NGINX_PORT=443 ssl
-     - SSL_CERT=ssl_certificate /etc/nginx/ssl/cloudflare/hevc.cc.pem
-     - SSL_KEY=ssl_certificate_key /etc/nginx/ssl/cloudflare/hevc.cc.key
+     - SSL_CERT=ssl_certificate /etc/nginx/ssl/cloudflare-hevc.cc.pem
+     - SSL_KEY=ssl_certificate_key /etc/nginx/ssl/cloudflare-hevc.cc.key
     restart: on-failure:5

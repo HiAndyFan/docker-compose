@@ -2,9 +2,6 @@ server {
     server_name  localhost;
 	include ${SSL_CONFIG};
 
-    #access_log  /var/log/nginx/host.access.log  main;
-    access_log  /var/log/nginx/access.log  proxy;
-
     location / {
         root   /usr/share/nginx/html;
         index  index.html index.htm;
@@ -41,4 +38,7 @@ server {
     #location ~ /\.ht {
     #    deny  all;
     #}
+    
+    # access_log  /var/log/nginx/host.access.log  main;
+    # access_log  /var/log/nginx/access.log  proxy;
 }
