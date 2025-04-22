@@ -1,17 +1,17 @@
 server {
-	server_name spelling.${NGINX_HOST};
-	include ${SSL_CONFIG};
+    server_name spelling.${NGINX_HOST};
+    include ${SSL_CONFIG};
 
 
-	location / {
-		root /var/www/word-spelling/;
-		index index.html index.htm;
-		add_header Cache-Control public;
-	}
-	location /youdao/ {
-		proxy_pass http://10.0.0.2:8080/;
-		proxy_set_header Host $host;
-	}
-	
+    location / {
+        root /var/www/word-spelling/;
+        index index.html index.htm;
+        add_header Cache-Control public;
+    }
+    location /youdao/ {
+        proxy_pass http://10.0.0.2:8080/;
+        proxy_set_header Host $host;
+    }
+    
     # access_log  /var/logs/nginx/access.log  proxy;
 }

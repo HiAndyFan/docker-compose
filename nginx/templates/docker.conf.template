@@ -1,70 +1,70 @@
 server {
-	server_name docker.${NGINX_HOST};
-	include ${SSL_CONFIG};
+    server_name docker.${NGINX_HOST};
+    include ${SSL_CONFIG};
 
-	root /var/www/docker-mirror/;
-	index index.nginx-debian.html index.html;
-	
-	location = / {
-		add_header Cache-Control public,max-age=3600;
-		try_files /docker_mirror.html =404;
-	}
-	
-	
-	location / {
-		# Docker hub 的官方镜像仓库
-		proxy_pass https://registry-1.docker.io;  
-		proxy_set_header Host registry-1.docker.io;
-		proxy_set_header X-Real-IP $remote_addr;
-		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-		proxy_set_header X-Forwarded-Proto $scheme;
-		 # 关闭缓存
-		proxy_buffering off;
+    root /var/www/docker-mirror/;
+    index index.nginx-debian.html index.html;
+    
+    location = / {
+        add_header Cache-Control public,max-age=3600;
+        try_files /docker_mirror.html =404;
+    }
+    
+    
+    location / {
+        # Docker hub 的官方镜像仓库
+        proxy_pass https://registry-1.docker.io;  
+        proxy_set_header Host registry-1.docker.io;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+         # 关闭缓存
+        proxy_buffering off;
 
-		# 转发认证相关的头部
-		proxy_set_header Authorization $http_authorization;
-		proxy_pass_header Authorization;
+        # 转发认证相关的头部
+        proxy_set_header Authorization $http_authorization;
+        proxy_pass_header Authorization;
 
-		# 重写 www-authenticate 头为你的反代地址
-		proxy_hide_header www-authenticate;
-		add_header www-authenticate 'Bearer realm="https://docker.${NGINX_HOST}/token",service="registry.docker.io"' always;
-		# always 参数确保该头部在返回 401 错误时无论什么情况下都会被添加。
+        # 重写 www-authenticate 头为你的反代地址
+        proxy_hide_header www-authenticate;
+        add_header www-authenticate 'Bearer realm="https://docker.${NGINX_HOST}/token",service="registry.docker.io"' always;
+        # always 参数确保该头部在返回 401 错误时无论什么情况下都会被添加。
 
-		# 对 upstream 状态码检查，实现 error_page 错误重定向
-		proxy_intercept_errors on;
-		# error_page 指令默认只检查了第一次后端返回的状态码，开启后可以跟随多次重定向。
-		recursive_error_pages on;
-		# 根据状态码执行对应操作，以下为301、302、307状态码都会触发
-		error_page 301 302 307 = @handle_redirect;
+        # 对 upstream 状态码检查，实现 error_page 错误重定向
+        proxy_intercept_errors on;
+        # error_page 指令默认只检查了第一次后端返回的状态码，开启后可以跟随多次重定向。
+        recursive_error_pages on;
+        # 根据状态码执行对应操作，以下为301、302、307状态码都会触发
+        error_page 301 302 307 = @handle_redirect;
 
-	}
-	# 处理 Docker OAuth2 Token 认证请求
-	location /token {
-	  resolver [2001:67c:2b0::4] valid=600s;
-	  proxy_pass https://auth.docker.io; # Docker 认证服务器
+    }
+    # 处理 Docker OAuth2 Token 认证请求
+    location /token {
+      resolver [2001:67c:2b0::4] valid=600s;
+      proxy_pass https://auth.docker.io; # Docker 认证服务器
 
-	  # 设置请求头，确保转发正确
-	  proxy_set_header Host auth.docker.io;
-	  proxy_set_header X-Real-IP $remote_addr;
-	  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-	  proxy_set_header X-Forwarded-Proto $scheme;
+      # 设置请求头，确保转发正确
+      proxy_set_header Host auth.docker.io;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
 
-	  # 传递 Authorization 头信息，获取 Token
-	  proxy_set_header Authorization $http_authorization;
-	  proxy_pass_header Authorization;
+      # 传递 Authorization 头信息，获取 Token
+      proxy_set_header Authorization $http_authorization;
+      proxy_pass_header Authorization;
 
-	  # 禁用缓存
-	  proxy_buffering off;
-	}
-	location @handle_redirect {
-		resolver [2001:67c:2b0::4];
-		set $saved_redirect_location '$upstream_http_location';
-		proxy_pass $saved_redirect_location;
-	}
-	
-	
-	
-	
-	
-	
+      # 禁用缓存
+      proxy_buffering off;
+    }
+    location @handle_redirect {
+        resolver [2001:67c:2b0::4];
+        set $saved_redirect_location '$upstream_http_location';
+        proxy_pass $saved_redirect_location;
+    }
+    
+    
+    
+    
+    
+    
 }

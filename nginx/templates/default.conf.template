@@ -1,6 +1,6 @@
 server {
     server_name  localhost;
-	include ${SSL_CONFIG};
+    include ${SSL_CONFIG};
 
     location / {
         root   /usr/share/nginx/html;

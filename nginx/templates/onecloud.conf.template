@@ -1,44 +1,44 @@
 server {
-	server_name one.l.${NGINX_HOST};
-	include ${SSL_CONFIG};
+    server_name one.l.${NGINX_HOST};
+    include ${SSL_CONFIG};
 
-	location /ddns/ {
-		proxy_pass http://10.0.0.7:9876/;
-		proxy_redirect / /ddns/;  # 处理相对路径的重定向
-		proxy_set_header Host $host;
-	}
-	location /certimate/ {
-		proxy_pass http://10.0.0.7:8090/;
-		proxy_redirect / /certimate/;  # 处理相对路径的重定向
-		proxy_set_header Host $host; 
-	}
-	location ~ ^/(assets|logo.svg|api|imgs) {
-		proxy_pass http://10.0.0.7:8090;
-		proxy_redirect     off;
-		proxy_set_header   Host $host;
-	}
-	location /router/ {
-		proxy_pass http://192.168.1.1/;
-		proxy_redirect / /router/;  # 处理相对路径的重定向
-		proxy_redirect http://192.168.1.1/ http://one.l.${NGINX_HOST}/router/;
-	    proxy_set_header Host $host;
-		proxy_set_header X-Real-IP $remote_addr;
-		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-		proxy_set_header X-Forwarded-Proto $scheme;
-		# 其他优化
-		proxy_buffering off;
-		proxy_http_version 1.1;
-	}
-	location ~ ^/(luci-static|cgi-bin) {
-		rewrite ^/router/(.*) /$1 break;
-		proxy_pass http://192.168.1.1;
-		proxy_redirect / /router/;  # 处理相对路径的重定向
-		proxy_redirect http://192.168.1.1/ http://lan.${NGINX_HOST}/router/;
-		proxy_set_header   Host $host;
-	}
-	
-	
-	
-	
+    location /ddns/ {
+        proxy_pass http://10.0.0.7:9876/;
+        proxy_redirect / /ddns/;  # 处理相对路径的重定向
+        proxy_set_header Host $host;
+    }
+    location /certimate/ {
+        proxy_pass http://10.0.0.7:8090/;
+        proxy_redirect / /certimate/;  # 处理相对路径的重定向
+        proxy_set_header Host $host; 
+    }
+    location ~ ^/(assets|logo.svg|api|imgs) {
+        proxy_pass http://10.0.0.7:8090;
+        proxy_redirect     off;
+        proxy_set_header   Host $host;
+    }
+    location /router/ {
+        proxy_pass http://192.168.1.1/;
+        proxy_redirect / /router/;  # 处理相对路径的重定向
+        proxy_redirect http://192.168.1.1/ http://one.l.${NGINX_HOST}/router/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        # 其他优化
+        proxy_buffering off;
+        proxy_http_version 1.1;
+    }
+    location ~ ^/(luci-static|cgi-bin) {
+        rewrite ^/router/(.*) /$1 break;
+        proxy_pass http://192.168.1.1;
+        proxy_redirect / /router/;  # 处理相对路径的重定向
+        proxy_redirect http://192.168.1.1/ http://lan.${NGINX_HOST}/router/;
+        proxy_set_header   Host $host;
+    }
+    
+    
+    
+    
     # access_log  /var/logs/nginx/access.log  proxy;
 }
