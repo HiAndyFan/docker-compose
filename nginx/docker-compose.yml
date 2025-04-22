@@ -7,7 +7,7 @@ services:
      - /etc/localtime:/etc/localtime:ro
      - ./templates/:/etc/nginx/templates/
      - ./ssl/:/etc/nginx/ssl/
-     - ./log/:/var/log/nginx/
+     - ./logs/:/var/logs/nginx/
      - ./blog/:/var/www/blog/
      - ./word-spelling/:/var/www/word-spelling/
      - ./download/:/var/www/download/
