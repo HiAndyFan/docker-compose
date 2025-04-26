@@ -9,4 +9,5 @@ services:
       - NET_ADMIN
     devices:
       - "/dev/net/tun:/dev/net/tun"
+    network_mode: "host"
     command: abfd31bd470727d4
