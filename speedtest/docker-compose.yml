@@ -1,0 +1,6 @@
+services:
+  speedtest:
+    image: andyf21/speedtest
+    ports:
+      - 8989:8080
+    container_name: speedtest
