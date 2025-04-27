@@ -1,10 +1,16 @@
 server {
-    server_name  localhost;
+    server_name localhost;
     include ${SSL_CONFIG};
 
     location / {
         root   /usr/share/nginx/html;
         index  index.html index.htm;
+    }
+    
+    location /speedtest/ {
+        proxy_pass http://localhost:8989/;
+        proxy_redirect / /speedtest/;  # 处理相对路径的重定向
+        proxy_set_header Host $host;
     }
 
     #error_page  404              /404.html;

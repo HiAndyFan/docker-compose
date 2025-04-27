@@ -2,6 +2,12 @@ server {
     server_name blog.${NGINX_HOST} b.0-v-0.cc;
     include ${SSL_CONFIG};
 
+    location /speedtest/ {
+        proxy_pass http://172.17.0.1:8989/;
+        proxy_redirect / /speedtest/;  # 处理相对路径的重定向
+        proxy_set_header Host $host;
+    }
+    
     # location / {
     #     root /var/www/blog/;
     #     index index.html index.htm;
