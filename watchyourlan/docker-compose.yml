@@ -1,0 +1,11 @@
+services:
+    watchyourlan:
+        container_name: wyl
+        environment:
+            - IFACES=eth0
+            - TZ=Asia/Shanghai
+            - HOST=[::]
+        network_mode: host
+        volumes:
+            - ~/persistence/wyl:/data/WatchYourLAN
+        image: aceberg/watchyourlan
