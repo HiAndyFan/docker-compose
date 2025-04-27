@@ -3,17 +3,17 @@ server {
     include ${SSL_CONFIG};
 
     location /ddns/ {
-        proxy_pass http://10.0.0.7:9876/;
+        proxy_pass http://172.17.0.1:9876/;
         proxy_redirect / /ddns/;  # 处理相对路径的重定向
         proxy_set_header Host $host;
     }
     location /certimate/ {
-        proxy_pass http://10.0.0.7:8090/;
+        proxy_pass http://172.17.0.1:8090/;
         proxy_redirect / /certimate/;  # 处理相对路径的重定向
         proxy_set_header Host $host; 
     }
     location ~ ^/(assets|logo.svg|api|imgs) {
-        proxy_pass http://10.0.0.7:8090;
+        proxy_pass http://172.17.0.1:8090;
         proxy_redirect     off;
         proxy_set_header   Host $host;
     }
