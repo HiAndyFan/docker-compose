@@ -1,7 +1,10 @@
 server {
     server_name one.l.${NGINX_HOST};
     include ${SSL_CONFIG};
-
+    location /wyl/ {
+        proxy_pass http://172.17.0.1:8840/;
+        proxy_redirect / /wyl/;  # 处理相对路径的重定向
+    }
     location /ddns/ {
         proxy_pass http://172.17.0.1:9876/;
         proxy_redirect / /ddns/;  # 处理相对路径的重定向
