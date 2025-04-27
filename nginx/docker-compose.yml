@@ -6,13 +6,14 @@ services:
      - /etc/timezone:/etc/timezone:ro
      - /etc/localtime:/etc/localtime:ro
      - ./templates/:/etc/nginx/templates/
-     - ./ssl/:/etc/nginx/ssl/
-     - ./logs/:/var/logs/nginx/
-     - ./blog/:/var/www/blog/
-     - ./word-spelling/:/var/www/word-spelling/
-     - ./download/:/var/www/download/
-     - ./nginx.conf/:/etc/nginx/nginx.conf/
-     - ./nginx_cache/:/cache/
+
+     - ~/persistence/nginx/ssl/:/etc/nginx/ssl/
+     - ~/persistence/nginx/logs/:/var/logs/nginx/
+     - ~/persistence/nginx/blog/:/var/www/blog/
+     - ~/persistence/nginx/word-spelling/:/var/www/word-spelling/
+     - ~/persistence/nginx/download/:/var/www/download/
+     - ~/persistence/nginx/nginx.conf/:/etc/nginx/nginx.conf/
+     - ~/persistence/nginx/nginx_cache/:/cache/
     ports:
      - "80:80"
      - "443:443"
@@ -20,6 +21,6 @@ services:
      - SSL_CONFIG=/etc/nginx/conf.d/ssl-config
      - NGINX_HOST=hevc.cc
      - NGINX_PORT=443 ssl
-     - SSL_CERT=ssl_certificate /etc/nginx/ssl/cloudflare-hevc.cc.pem
-     - SSL_KEY=ssl_certificate_key /etc/nginx/ssl/cloudflare-hevc.cc.key
+     - SSL_CERT=ssl_certificate /etc/nginx/ssl/hevc.cc-cf.pem
+     - SSL_KEY=ssl_certificate_key /etc/nginx/ssl/hevc.cc-cf.key
     restart: on-failure:5
