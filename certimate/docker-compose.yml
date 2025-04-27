@@ -1,12 +1,13 @@
 version: "3.0"
 services:
   certimate:
-    image: andyf21/certimate:armv7l
+    image: andyf21/certimate:v0.3.9
     container_name: certimate_server
     ports:
       - 8090:8090
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
-      - ./data:/app/pb_data
+      - ~/persistence/certimate/data/:/app/pb_data/
+      - ~/persistence/certimate/ssl/:/etc/ssl/certimate/
     restart: unless-stopped
