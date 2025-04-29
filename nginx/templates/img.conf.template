@@ -1,24 +1,24 @@
 server {
-    server_name img.${NGINX_HOST};
+    server_name img.${NGINX_HOST} front-img.hevc.cc;
     include ${SSL_CONFIG};
 
     location / {
         proxy_cache qiniu_cache;
         proxy_pass http://qiniu-img.jpeg.asia/;
-        proxy_set_header referer "jweiskrdpxwfoa.iq";
+        proxy_set_header X-Forwarded-Proto "http";
+        # proxy_set_header referer "jweiskrdpxwfoa.iq";
 
         # 缓存键设置
         proxy_cache_key "$scheme$request_method$host$request_uri";
 
         # 忽略原有Cache-Control字段
-        proxy_ignore_headers Cache-Control;
+        # proxy_ignore_headers Cache-Control;
 
-        # 缓存有效时间
-        proxy_cache_valid 200 30d;
-        proxy_cache_valid 403 404 302 301 3s;
-        # 其他状态码默认缓存时间
-        proxy_cache_valid any 5m;
         proxy_cache_revalidate on;
+        # 缓存有效时间
+        proxy_cache_valid 200 304 5m;
+        proxy_cache_valid 302 403 404 500 502 503 504 3s;
+        proxy_cache_valid any 3s;
 
         # 以下参数不为空则绕过缓存
         proxy_cache_bypass $cookie_nocache $http_authorization $arg_nocache;

@@ -1,4 +1,6 @@
 listen ${NGINX_PORT};
 listen  [::]:${NGINX_PORT};
+listen 4443 ssl;
+listen [::]:4443 ssl;
 ${SSL_CERT};
 ${SSL_KEY};

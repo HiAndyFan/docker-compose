@@ -1,11 +1,18 @@
 server {
-    server_name blog.${NGINX_HOST} b.0-v-0.cc;
+    server_name blog.${NGINX_HOST} onecloud.hevc.cc front-blog.hevc.cc blog.jpeg.asia;
     include ${SSL_CONFIG};
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305';
 
     location /speedtest/ {
-        proxy_pass http://172.17.0.1:8989/;
+        proxy_pass http://localhost:8989/;
         proxy_redirect / /speedtest/;  # 处理相对路径的重定向
         proxy_set_header Host $host;
+        
+        # 设置 HTTP_CLIENT_IP 头
+        proxy_set_header CLIENT-IP $remote_addr;
+        proxy_buffering off;
     }
     
     # location / {
@@ -17,19 +24,20 @@ server {
     location / {
         proxy_cache qiniu_cache;
         proxy_pass http://qiniu-blog.jpeg.asia/;
+        proxy_set_header X-Forwarded-Proto "http";
 
         # 缓存键设置
         proxy_cache_key "$scheme$request_method$host$request_uri";
 
         # 忽略原有Cache-Control字段
         proxy_ignore_headers Cache-Control;
-
-        # 缓存有效时间
-        proxy_cache_valid 200 10m;
-        proxy_cache_valid 403 404 302 3s;
-        # 其他状态码默认缓存时间
-        proxy_cache_valid any 5m;
+        # 校验客户端传来的Etag/Last-Modify, 若没有变化则返回缓存资源
         proxy_cache_revalidate on;
+        # 缓存有效时间
+        proxy_cache_valid 200 304 5m;
+        proxy_cache_valid 302 403 404 500 502 503 504 3s;
+        proxy_cache_valid any 3s;
+        proxy_ignore_headers Set-Cookie;  # 忽略可能干扰缓存的头
 
         # 以下参数不为空则绕过缓存
         proxy_cache_bypass $cookie_nocache $http_authorization $arg_nocache;

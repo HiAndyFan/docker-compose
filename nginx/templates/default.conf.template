@@ -1,5 +1,5 @@
 server {
-    server_name localhost;
+    server_name _;
     include ${SSL_CONFIG};
 
     location / {
@@ -11,6 +11,7 @@ server {
         proxy_pass http://localhost:8989/;
         proxy_redirect / /speedtest/;  # 处理相对路径的重定向
         proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 
     #error_page  404              /404.html;
