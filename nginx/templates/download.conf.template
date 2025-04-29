@@ -15,5 +15,4 @@ server {
         add_header Cache-Control private;
     }
 
-    # access_log  /var/logs/nginx/access.log  proxy;
 }

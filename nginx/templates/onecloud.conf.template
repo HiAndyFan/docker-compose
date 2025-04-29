@@ -36,9 +36,4 @@ server {
         proxy_redirect http://192.168.1.1/ http://lan.${NGINX_HOST}/router/;
         proxy_set_header   Host $host;
     }
-    
-    
-    
-    
-    # access_log  /var/logs/nginx/access.log  proxy;
 }
