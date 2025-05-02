@@ -10,16 +10,18 @@ services:
       - USER= admin
       - PASS= 0shimima
       - TORRENT_PORT_HTTP=9091
-      - TORRENT_PORT_NAT=22789
+      - TORRENT_PORT_NAT=52437
       - USERNAME=admin
       - PASSWORD=0shimima
     volumes:
-      - ./config:/var/lib/transmission/config
-      - /mnt/usb1/downloads:/var/lib/transmission/downloads
-      - ./watch:/var/lib/transmission/torrents
+      - ~/persistence/transmission/config/:/var/lib/transmission/config
+      - /mnt/usb1/downloads/:/var/lib/transmission/downloads
+      - ./watch/:/var/lib/transmission/torrents
+      - ~/persistence/transmission/webui/:/usr/share/transmission/public_html:ro
+
     ports:
       - 9091:9091
-      - 22789:22789
-      - 22789:22789/udp
-    network_mode: host
-    restart: unless-stopped
+      - 52437:52437
+      - 52437:52437/udp
+    network_mode: bridge
+    restart: on-failure:5

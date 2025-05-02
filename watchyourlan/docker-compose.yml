@@ -9,3 +9,4 @@ services:
         volumes:
             - ~/persistence/wyl:/data/WatchYourLAN
         image: aceberg/watchyourlan
+        restart: unless-stopped
