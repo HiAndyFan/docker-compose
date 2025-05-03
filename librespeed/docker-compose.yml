@@ -1,7 +1,7 @@
 ---
 services:
   librespeed:
-    image: lscr.io/linuxserver/librespeed:latest
+    image: andyf21/speedtest:latest
     container_name: librespeed
     environment:
       - PUID=1000
@@ -17,7 +17,7 @@ services:
       - DB_PORT=DB_PORT #optional
       - IPINFO_APIKEY=ACCESS_TOKEN #optional
     volumes:
-      - /path/to/librespeed/config:/config
+      - ~/persistence/librespeed/config:/config
     ports:
-      - 1080:80
+      - 8989:8080
     restart: unless-stopped

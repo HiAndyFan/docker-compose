@@ -1,13 +1,11 @@
-version: '3.8'
-
 services:
   zerotier:
     image: zerotier/zerotier:latest
     container_name: myzerotier
-    restart: unless-stopped
     cap_add:
       - NET_ADMIN
     devices:
       - "/dev/net/tun:/dev/net/tun"
     network_mode: "host"
     command: abfd31bd470727d4
+    restart: unless-stopped
