@@ -25,4 +25,4 @@ services:
       - NGINX_PORT=443 ssl
       - SSL_CERT=ssl_certificate /etc/nginx/ssl/hevc.cc.pem
       - SSL_KEY=ssl_certificate_key /etc/nginx/ssl/hevc.cc.key
-    restart: on-failure:5
+    restart: unless-stopped

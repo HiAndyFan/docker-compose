@@ -1,11 +1,14 @@
 server {
     server_name one.l.${NGINX_HOST};
     include ${SSL_CONFIG};
+    # DDNS
     location /ddns/ {
         proxy_pass http://172.17.0.1:9876/;
         proxy_redirect / /ddns/;  # 处理相对路径的重定向
         proxy_set_header Host $host;
+        proxy_set_header   X-Forwarded-For    $proxy_add_x_forwarded_for;
     }
+    # Certimate
     location /certimate/ {
         proxy_pass http://172.17.0.1:8090/;
         proxy_redirect / /certimate/;  # 处理相对路径的重定向
@@ -16,7 +19,34 @@ server {
         proxy_redirect     off;
         proxy_set_header   Host $host;
     }
+    # qbittorrent
+    location /qbit/ {
+        proxy_pass http://172.17.0.1:8081/;
+        proxy_http_version 1.1;
 
+        # headers recognized by qBittorrent
+        proxy_set_header   Host               $proxy_host;
+        proxy_set_header   X-Forwarded-For    $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Host   $http_host;
+        proxy_set_header   X-Forwarded-Proto  $scheme;
+
+        # optionally, you can adjust the POST request size limit, to allow adding a lot of torrents at once
+        #client_max_body_size 100M;
+
+        # No longer required since qBittorrent v5.1:
+        # Since v4.2.2, is possible to configure qBittorrent
+        # to set the "Secure" flag for the session cookie automatically.
+        # However, that option does nothing unless using qBittorrent's built-in HTTPS functionality.
+        # For this use case, where qBittorrent itself is using plain HTTP
+        # (and regardless of whether or not the external website uses HTTPS),
+        # the flag must be set here, in the proxy configuration itself.
+        # Note: If this flag is set while the external website uses only HTTP, this will cause
+        # the login mechanism to not work without any apparent errors in console/network resulting in "auth loops".
+        proxy_cookie_path  /                  "/; Secure";
+    }
+    
+    
+    # Router
     location /router/ {
         proxy_pass http://192.168.1.1/;
         proxy_redirect / /router/;  # 处理相对路径的重定向
