@@ -1,24 +1,28 @@
 server {
-    server_name docker.${NGINX_HOST};
-    include ${SSL_CONFIG};
+    server_name docker.${NGINX_HOST} aws-docker.${NGINX_HOST};
+    listen 80;
+    listen  [::]:80;
 
-    root /var/www/docker-mirror/;
+    charset utf-8;
+    root /root/persistence/nginx/docker-mirror/;
     index index.nginx-debian.html index.html;
     
     location = / {
         add_header Cache-Control public,max-age=3600;
-        try_files /docker_mirror.html =404;
+        try_files /index.html =404;
     }
-    
-    
+    location =/favicon.ico {
+        root /root/persistence/nginx/docker-mirror/;
+    }
+
     location / {
         # Docker hub 的官方镜像仓库
-        proxy_pass https://registry-1.docker.io;  
+        proxy_pass https://registry-1.docker.io;
         proxy_set_header Host registry-1.docker.io;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-         # 关闭缓存
+        # 关闭缓存
         proxy_buffering off;
 
         # 转发认证相关的头部
@@ -36,8 +40,14 @@ server {
         recursive_error_pages on;
         # 根据状态码执行对应操作，以下为301、302、307状态码都会触发
         error_page 301 302 307 = @handle_redirect;
-
     }
+    
+    # 处理 download.docker.com 请求
+    location ~ ^/(linux|mac|win) {
+        proxy_pass https://download.docker.com;
+        proxy_ssl_server_name on;
+    }
+    
     # 处理 Docker OAuth2 Token 认证请求
     location /token {
       resolver [2001:67c:2b0::4] valid=600s;
@@ -56,15 +66,19 @@ server {
       # 禁用缓存
       proxy_buffering off;
     }
+
     location @handle_redirect {
         resolver [2001:67c:2b0::4];
         set $saved_redirect_location '$upstream_http_location';
         proxy_pass $saved_redirect_location;
     }
-    
-    
-    
-    
-    
-    
+}
+
+server {
+    server_name docker.${NGINX_HOST} aws-docker.${NGINX_HOST};
+    include ${SSL_CONFIG};
+    location / {
+        proxy_pass localhost:80;
+    }
+    proxy_buffering off;
 }
