@@ -1,5 +1,5 @@
 server {
-    server_name one.l.${NGINX_HOST};
+    server_name oneb.l.${NGINX_HOST};
     include ${SSL_CONFIG};
     # DDNS
     location /ddns/ {
