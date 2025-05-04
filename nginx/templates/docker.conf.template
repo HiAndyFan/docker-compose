@@ -78,7 +78,7 @@ server {
     server_name docker.${NGINX_HOST} aws-docker.${NGINX_HOST};
     include ${SSL_CONFIG};
     location / {
-        proxy_pass localhost:80;
+        proxy_pass http://localhost:80;
     }
     proxy_buffering off;
 }
