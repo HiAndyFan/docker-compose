@@ -8,7 +8,7 @@ server {
     location /speedtest/ {
         proxy_pass http://172.17.0.1:8989/;
         proxy_redirect / /speedtest/;  # 处理相对路径的重定向
-        proxy_set_header Host $host;
+        proxy_set_header Host "qiniu-blog.jpeg.asia";
         
         # 设置 HTTP_CLIENT_IP 头
         proxy_set_header CLIENT-IP $remote_addr;
