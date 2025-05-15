@@ -1,0 +1,74 @@
+---
+###############################################################
+#                   Authelia configuration                    #
+###############################################################
+
+server:
+  address: 'tcp://:9091'
+
+log:
+  level: 'debug'
+
+totp:
+  issuer: '0-v-0'
+
+identity_validation:
+  reset_password:
+    jwt_secret: 'a_very_important_secret'
+
+# duo_api:
+#  hostname: api-123456789.example.com
+#  integration_key: ABCDEF
+#  # This secret can also be set using the env variables AUTHELIA_DUO_API_SECRET_KEY_FILE
+#  secret_key: 1234567890abcdefghifjkl
+
+authentication_backend:
+  file:
+    path: '/config/users_database.yml'
+
+access_control:
+  default_policy: 'deny'
+  rules:
+    # Rules applied to everyone
+    - domain: 'public.hevc.cc'
+      policy: 'bypass'
+    - domain: 'traefik.hevc.cc'
+      policy: 'one_factor'
+    - domain: 'secure.hevc.cc'
+      policy: 'two_factor'
+
+session:
+  # This secret can also be set using the env variables AUTHELIA_SESSION_SECRET_FILE
+  secret: 'insecure_session_secret'
+
+  cookies:
+    - name: 'authelia_session'
+      domain: 'hevc.cc'  # Should match whatever your root protected domain is
+      authelia_url: 'https://auth.hevc.cc'
+      expiration: '1 hour'
+      inactivity: '5 minutes'
+
+  redis:
+    host: 'redis'
+    port: 6379
+    # This secret can also be set using the env variables AUTHELIA_SESSION_REDIS_PASSWORD_FILE
+    # password: authelia
+
+regulation:
+  max_retries: 3
+  find_time: '2 minutes'
+  ban_time: '5 minutes'
+
+storage:
+  encryption_key: 'you_must_generate_a_random_string_of_more_than_twenty_chars_and_configure_this'
+  local:
+    path: '/config/db.sqlite3'
+
+notifier:
+  smtp:
+    username: 'MS_972H7G@test-xkjn41mz6x94z781.mlsender.net'
+    # This secret can also be set using the env variables AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE
+    password: 'mssp.9sAt6Va.o65qngkmj0olwr12.XfS4y1L'
+    address: 'smtp://smtp.mailersend.net:587'
+    sender: 'MS_972H7G@test-xkjn41mz6x94z781.mlsender.net'
+...

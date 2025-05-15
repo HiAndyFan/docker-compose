@@ -1,0 +1,19 @@
+---
+###############################################################
+#                         Users Database                      #
+###############################################################
+
+# This file can be used if you do not have an LDAP set up.
+
+# List of users
+users:
+  authelia:
+    disabled: false
+    displayname: 'Authelia User'
+    # Password is authelia
+    password: '$argon2id$v=19$m=65536,t=3,p=4$CREjodrJ1+TlDMe/HcZbGg$X5D2BHyNSq740z4XX1dQbbUdei5V2UrEfXcfZXwVyXk'
+    email: 'authelia@authelia.com'
+    groups:
+      - 'admins'
+      - 'dev'
+...
