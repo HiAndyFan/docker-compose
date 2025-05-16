@@ -3,3 +3,4 @@ nginx/ssl/
 nginx/blog/
 nginx/docker/
 cloudflare.ini
+.history
