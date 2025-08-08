@@ -7,6 +7,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
-      - ~/persistence/certimate/data/:/app/pb_data/
-      - ~/persistence/nginx/ssl/:/etc/ssl/certimate/
+      - ../persistence/certimate/data/:/app/pb_data/
+      - ../persistence/nginx/ssl/:/etc/ssl/certimate/
     restart: unless-stopped

@@ -29,5 +29,5 @@ services:
     volumes:
       - ${QBT_CONFIG_PATH}:/config
       - ${QBT_DOWNLOADS_PATH}:/downloads
-      - ~/persistence/qbittorrent/webui/:/var/www/html/
+      - ../persistence/qbittorrent/webui/:/var/www/html/
     restart: on-failure:5

@@ -7,6 +7,6 @@ services:
             - HOST=[::]
         network_mode: host
         volumes:
-            - ~/persistence/wyl:/data/WatchYourLAN
+            - ../persistence/wyl:/data/WatchYourLAN
         image: aceberg/watchyourlan
         restart: unless-stopped

@@ -17,7 +17,7 @@ services:
       - DB_PORT=DB_PORT #optional
       - IPINFO_APIKEY=ACCESS_TOKEN #optional
     volumes:
-      - ~/persistence/librespeed/config:/config
+      - ../persistence/librespeed/config:/config
     ports:
       - 8989:8080
     restart: unless-stopped

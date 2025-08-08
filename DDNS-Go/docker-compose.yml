@@ -6,5 +6,5 @@ services:
       - TZ=Asia/Shanghai
     network_mode: "host"
     volumes:
-      - ~/persistence/ddns-go/:/root
+      - ../persistence/ddns-go/:/root
     restart: unless-stopped

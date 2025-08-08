@@ -14,10 +14,10 @@ services:
       - USERNAME=admin
       - PASSWORD=0shimima
     volumes:
-      - ~/persistence/transmission/config/:/var/lib/transmission/config
+      - ../persistence/transmission/config/:/var/lib/transmission/config
       - /mnt/usb1/downloads/:/var/lib/transmission/downloads
       - ./watch/:/var/lib/transmission/torrents
-      - ~/persistence/transmission/webui/:/usr/share/transmission/public_html:ro
+      - ../persistence/transmission/webui/:/usr/share/transmission/public_html:ro
 
     ports:
       - 9091:9091
