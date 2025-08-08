@@ -1,5 +1,5 @@
 server {
-    server_name h.jpeg.asia;
+    server_name p.jpeg.asia;
     listen 80;
 
     # 添加响应头指示缓存状态
@@ -9,9 +9,9 @@ server {
     location ~* \.(mp4|mkv|ts|mpegts)$ {
         slice 10m;
         proxy_cache video_cache;
-        proxy_pass https://nsfw.oceancloud.asia;
-        proxy_set_header Host nsfw.oceancloud.asia;
-        proxy_set_header Referer "https://nsfw.oceancloud.asia/";
+        proxy_pass https://matrix.313445.xyz;
+        proxy_set_header Host matrix.313445.xyz;
+        proxy_set_header Referer "https://matrix.313445.xyz/";
         proxy_set_header X-Forwarded-For "";
         proxy_set_header X-Forwarded-Proto "";
         proxy_set_header Via "";
@@ -36,16 +36,14 @@ server {
 
         # 处理大文件分片
         proxy_cache_use_stale error timeout invalid_header updating;
-
-        access_log /var/log/nginx/cache.log proxy_log;
     }
 
     # 处理其他文件，尊重源站 Cache-Control
     location / {
         proxy_cache web_cache;
-        proxy_pass https://nsfw.oceancloud.asia;
-        proxy_set_header Host nsfw.oceancloud.asia;
-        proxy_set_header Referer "https://nsfw.oceancloud.asia/";
+        proxy_pass https://matrix.313445.xyz;
+        proxy_set_header Host matrix.313445.xyz;
+        proxy_set_header Referer "https://matrix.313445.xyz/";
         proxy_set_header X-Forwarded-For "";
         proxy_set_header X-Forwarded-Proto "";
         proxy_set_header Via "";
@@ -69,10 +67,7 @@ server {
 
         # 处理大文件分片
         proxy_cache_use_stale error timeout invalid_header updating;
-        
-        access_log /var/log/nginx/cache.log proxy_log;
     }
-    location = /emby/Sessions/Playing/Progress/ {
-        return 204;
-    }
+    
+    access_log /var/log/nginx/proxy_313445.log proxy_log;
 }
