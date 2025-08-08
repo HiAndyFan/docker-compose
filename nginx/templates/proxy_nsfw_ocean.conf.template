@@ -1,5 +1,5 @@
 server {
-    server_name h.jpeg.asia;
+    server_name nsfw_ocean.jpeg.asia;
     listen 80;
 
     # 添加响应头指示缓存状态
@@ -8,7 +8,7 @@ server {
     # 处理 .mp4 文件，缓存 7 天
     location ~* \.(mp4|mkv|ts|mpegts)$ {
         slice 10m;
-        proxy_cache video_cache;
+        proxy_cache nsfw_ocean_video_cache;
         proxy_pass https://nsfw.oceancloud.asia;
         proxy_set_header Host nsfw.oceancloud.asia;
         proxy_set_header Referer "https://nsfw.oceancloud.asia/";
@@ -20,10 +20,10 @@ server {
         proxy_ignore_headers Set-Cookie Cache-Control Expires Vary;
 
         # 正确处理 Range 请求
-        proxy_cache_key $uri$slice_range;
+        proxy_cache_key $http_host$uri$slice_range;
         proxy_set_header Range $slice_range;
 
-        # 缓存 200 和 206 响应，固定 7 天
+        # 200 和 206 响应，固定缓存 7 天
         proxy_cache_valid 200 206 7d;
 
         # 启用缓存锁
@@ -36,8 +36,6 @@ server {
 
         # 处理大文件分片
         proxy_cache_use_stale error timeout invalid_header updating;
-
-        access_log /var/log/nginx/cache.log proxy_log;
     }
 
     # 处理其他文件，尊重源站 Cache-Control
@@ -53,10 +51,9 @@ server {
         #忽略可能干扰缓存的头
         proxy_ignore_headers Set-Cookie;
 
-        proxy_cache_key $uri$is_args$args;
+        proxy_cache_key $http_host$uri$is_args$args;
 
-        # 不设置 proxy_cache_valid，尊重源站 Cache-Control 或 Expires
-        # proxy_cache_valid 由后端控制
+        # 如果后端没有设置 Cache-Control 或 Expires，使用默认缓存时间
         proxy_cache_valid 200 206 1d;
 
         # 启用缓存锁
@@ -69,10 +66,12 @@ server {
 
         # 处理大文件分片
         proxy_cache_use_stale error timeout invalid_header updating;
-        
-        access_log /var/log/nginx/cache.log proxy_log;
     }
+
+    # 拦截 Emby 播放进度更新请求
     location = /emby/Sessions/Playing/Progress/ {
         return 204;
     }
+
+    access_log /var/log/nginx/nsfw_ocean.log proxy_log;
 }

@@ -1,0 +1,72 @@
+server {
+    server_name matrix.jpeg.asia;
+    listen 80;
+
+    # 添加响应头指示缓存状态
+    add_header X-Cache-Status $upstream_cache_status always;
+
+    # 处理 .mp4 文件，缓存 7 天
+    location ~* \.(mp4|mkv|ts|mpegts)$ {
+        slice 10m;
+        proxy_cache matrix_video_cache;
+        proxy_pass https://matrix.313445.xyz;
+        proxy_set_header Host matrix.313445.xyz;
+        proxy_set_header Referer "https://matrix.313445.xyz/";
+        proxy_set_header X-Forwarded-For "";
+        proxy_set_header X-Forwarded-Proto "";
+        proxy_set_header Via "";
+        proxy_ssl_server_name on;
+        #忽略可能干扰缓存的头
+        proxy_ignore_headers Set-Cookie Cache-Control Expires Vary;
+
+        # 正确处理 Range 请求
+        proxy_cache_key $http_host$uri$slice_range;
+        proxy_set_header Range $slice_range;
+
+        # 200 和 206 响应，固定缓存 7 天
+        proxy_cache_valid 200 206 7d;
+
+        # 启用缓存锁
+        proxy_cache_lock on;
+        proxy_cache_lock_age 60s;
+        proxy_cache_lock_timeout 300s;
+
+        # 确保后端支持 Range 请求
+        proxy_http_version 1.1;
+
+        # 处理大文件分片
+        proxy_cache_use_stale error timeout invalid_header updating;
+    }
+
+    # 处理其他文件，尊重源站 Cache-Control
+    location / {
+        proxy_cache web_cache;
+        proxy_pass https://matrix.313445.xyz;
+        proxy_set_header Host matrix.313445.xyz;
+        proxy_set_header Referer "https://matrix.313445.xyz/";
+        proxy_set_header X-Forwarded-For "";
+        proxy_set_header X-Forwarded-Proto "";
+        proxy_set_header Via "";
+        proxy_ssl_server_name on;
+        #忽略可能干扰缓存的头
+        proxy_ignore_headers Set-Cookie;
+
+        proxy_cache_key $http_host$uri$is_args$args;
+
+        # 如果后端没有设置 Cache-Control 或 Expires，使用默认缓存时间
+        proxy_cache_valid 200 206 1d;
+
+        # 启用缓存锁
+        proxy_cache_lock on;
+        proxy_cache_lock_age 30s;
+        proxy_cache_lock_timeout 45s;
+
+        # 确保后端支持 Range 请求
+        proxy_http_version 1.1;
+
+        # 处理大文件分片
+        proxy_cache_use_stale error timeout invalid_header updating;
+    }
+    
+    access_log /var/log/nginx/matrix.log proxy_log;
+}
